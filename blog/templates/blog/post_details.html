@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Blog page
+{% endblock %}
+{% block cssfile %}
+<link rel="stylesheet" type="text/css" href="{% static "index.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "post.css" %}">
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static "all_post.css" %}">  {% endcomment %}
+<link rel="stylesheet" type="text/css" href="{% static "post_details.css" %}"> 
+<link rel="stylesheet" type="text/css" href="{% static "form.css" %}"> 
+{% endblock %}
+
+{% block content %}
+<section id='summary'>
+
+   
+
+    <h2>{{object.title}} </h2>
+    <div>
+
+        {% for tags in tags%}
+        <span class='tag'> {{tags.caption}}</span>
+        {% endfor %}
+
+
+
+   </div> 
+   <div  id='read-later'>
+    <form action='{% url 'readlater' %}' method='POST'>
+      {% csrf_token %}
+      <input type="hidden" value={{object.id}} name='post_id'>
+
+      {% if later_button %}
+      <button>Remove from read later</button>
+      {% else %}
+      <button>Read Later</button>
+      {% endif %}
+  
+    </form>
+   </div>
+    <article>
+        <img src="{{object.image.url}}" alt="error" />
+        <address> By  <a href="mailto:{{object.author.email}}"> {{object.author}}</a> </address>
+        <div>
+            Last Updated on <time> {{object.date}}</time>
+        </div>
+    </article>
+
+
+
+</section>
+
+<main>
+    <p>
+   {{object.content|linebreaks}}
+    </p>
+</main>
+
+<section id="comments">
+  <ul>
+    {% for comment in data %}
+    <li>
+    <h2>{{comment.first_name}}</h2>
+    <p>{{comment.text|linebreaks }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+
+<section id="comment-form">
+ 
+    <h2>Your commnet</h2>
+    <form action="{% url 'specific_post' object.slug %}" method='POST'>
+        {% csrf_token %}
+        {% for form_field in comment_form %}
+      <div class="form-control">
+        {{form_field.label_tag}}
+        {{form_field}}
+        {{form_field.errors}}
+      </div>
+      {% endfor %}
+      <button>comment here!</button>
+    </form>
+  </section>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Blog page
+{% endblock %}
+{% block cssfile %}
+<link rel="stylesheet" type="text/css" href="{% static "index.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "post.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "all_post.css" %}"> 
+{% endblock %}
+
+{% block content %}
+
+<header id='main-navigation'>
+    <h1> <a href="{% url 'starting_page' %}"> Bishal Blog <a/> </h1>
+  
+        <nav>
+            <a href="{% url 'all_post' %}">All Posts</a>
+            <a href="{% url 'readlater' %}">Read later</a>
+        </nav>
+</header>
+
+<section id="all-posts">
+    <h2>My Collected Posts</h2>
+
+    <ul>
+    {% for item in all_posts %}
+
+     {% include 'blog/include/include.html' %}
+    
+
+     {% endfor %}
+    </ul>
+  </section>
+
+
+
+
+  
+{% endblock %}

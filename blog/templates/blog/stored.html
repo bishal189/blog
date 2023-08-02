@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block title %}
+stored page
+{% endblock %}
+{% block cssfile %}
+<link rel="stylesheet" type="text/css" href="{% static "stored.css" %}">
+{% endblock %}
+  
+    
+
+{% block content %}
+<section id='stored-posts'>
+    {% if not  has_post %}
+    <p> NO post to read later</p>
+    {% endif %}
+    {% for item in posts %}
+    <li><a href="{% url 'specific_post' item.slug %}">{{item.title}}</a></li>
+    {% endfor %}
+</section>
+{% endblock %}
